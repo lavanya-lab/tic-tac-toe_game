@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            background: url("image.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .navbar {
+            height: 50px;
+            background-color: rgb(34, 11, 11);
+            color: white;
+        }
+
+        .navbar ul li {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: cursive;
+            list-style: none;
+            margin: 0px;
+            padding: 7px 10px;
+        }
+
+        footer {
+            background-color: rgb(34, 11, 11);
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            /* margin-top: 10px; */
+        }
+
+        .grids {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(3, 150px);
+            grid-template-rows: repeat(3, 150px);
+            margin: 20px;
+            padding: 5px;
+        }
+
+        .grids>div {
+            background-color: bisque;
+            border: 2px solid black;
+            margin: 11px;
+            padding: 4px;
+
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .grid-items:hover {
+            background-color: blanchedalmond;
+            cursor: pointer;
+        }
+
+        #second-section-head {
+            margin: 10px;
+            padding: 10px;
+            text-decoration: underline;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+
+        #first {
+            display: flex;
+            margin: 17px;
+            padding: 5px;
+        }
+
+        #first-text {
+            margin: 0px 20px;
+            font-weight: bold;
+            color: darkblue;
+        }
+
+        #first>div {
+
+            background-color: rgb(255, 139, 203);
+            border-radius: 5px;
+            border: 2px solid lightskyblue;
+            padding: 7px;
+        }
+
+        #first>button {
+            padding: 7px;
+        }
+
+        #second {
+            margin-left: 33px;
+            margin-top: 40px;
+        }
+
+        #second img {
+            width: 100px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        #third {
+            margin-left: 33px;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            display: none;
+        }
+
+        #second-section {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul>
+            <li>MyTicTacToe.com</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div id="first-section">
+            <div class="grids">
+                <div class="grid-items" id="item-1"></div>
+                <div class="grid-items" id="item-2"></div>
+                <div class="grid-items" id="item-3"></div>
+                <div class="grid-items" id="item-4"></div>
+                <div class="grid-items" id="item-5"></div>
+                <div class="grid-items" id="item-6"></div>
+                <div class="grid-items" id="item-7"></div>
+                <div class="grid-items" id="item-8"></div>
+                <div class="grid-items" id="item-9"></div>
+            </div>
+        </div>
+        <div id="second-section">
+            <div id="second-section-head">
+                <h2>Welcome to MyTicTacToe</h2>
+            </div>
+            <div id="second-section-body">
+                <div id="first">
+                    <div id="first-text">Turn for X</div>
+                    <button class="btn" id="reset">Reset</button>
+                </div>
+                <div id="second">
+                    <img src="image.gif" alt="You Won" id="second_img">
+                </div>
+                <div id="third">
+                    X wins
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        Copyright-2024
+    </footer>
+
+    <script>
+        let ting_audio = new Audio('ting.mp3');
+        let win_audio = new Audio('music.mp3');
+        let gameover_audio = new Audio('gameover.mp3');
+        const buttons = document.getElementsByClassName("grids");
+        let temp_id;
+        let count = 0;
+        let i = 0;
+        const buttonPressed = e => {  // Get ID of Clicked Element
+            temp_id = e.target.id;
+            console.log(temp_id);
+            count++;
+            if (count % 2 == 0) {
+                document.getElementById("first-text").innerHTML = "Turn for X";
+                document.getElementById(temp_id).innerHTML = "O";
+            }
+            else {
+                document.getElementById("first-text").innerHTML = "Turn for O";
+                document.getElementById(temp_id).innerHTML = "X";
+            }
+            ting_audio.play();
+            win();
+            console.log(count);
+            if (count == 9) {
+                lose();
+            }
+        }
+        for (let button of buttons) {
+            button.addEventListener("click", buttonPressed);
+        }
+        reset = document.getElementById("reset");
+        reset.addEventListener("click", reseted);
+        function reseted() {
+            count = 0;
+            let len = 9;
+            while (len--) {
+                document.getElementById(`item-${len + 1}`).innerHTML = "";
+            }
+            console.clear();
+            console.log(count);
+            document.getElementById("second_img").style.display = 'none';
+            document.getElementById("third").style.display = 'none';
+            document.getElementById("first-text").innerHTML = 'Turn for X';
+            document.getElementById("item-1").style.backgroundColor = "bisque";
+            document.getElementById("item-2").style.backgroundColor = "bisque";
+            document.getElementById("item-3").style.backgroundColor = "bisque";
+            document.getElementById("item-4").style.backgroundColor = "bisque";
+            document.getElementById("item-5").style.backgroundColor = "bisque";
+            document.getElementById("item-6").style.backgroundColor = "bisque";
+            document.getElementById("item-7").style.backgroundColor = "bisque";
+            document.getElementById("item-8").style.backgroundColor = "bisque";
+            document.getElementById("item-9").style.backgroundColor = "bisque";
+        }
+        elem1 = document.getElementById("item-1");
+        elem2 = document.getElementById("item-2");
+        elem3 = document.getElementById("item-3");
+        elem4 = document.getElementById("item-4");
+        elem5 = document.getElementById("item-5");
+        elem6 = document.getElementById("item-6");
+        elem7 = document.getElementById("item-7");
+        elem8 = document.getElementById("item-8");
+        elem9 = document.getElementById("item-9");
+        let flag = 0;
+        function win() {
+            if (elem1.innerHTML == elem2.innerHTML && elem2.innerHTML == elem3.innerHTML && elem1.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem1.innerHTML + " wins");
+                console.log(elem1.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-1").style.backgroundColor = "orange";
+                document.getElementById("item-2").style.backgroundColor = "orange";
+                document.getElementById("item-3").style.backgroundColor = "orange";
+                flag = 1;
+            }
+            else if (elem4.innerHTML == elem5.innerHTML && elem5.innerHTML == elem6.innerHTML && elem4.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem4.innerHTML + " wins");
+                console.log(elem4.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-4").style.backgroundColor = "orange";
+                document.getElementById("item-5").style.backgroundColor = "orange";
+                document.getElementById("item-6").style.backgroundColor = "orange";
+                flag = 1;
+            }
+            else if (elem7.innerHTML == elem8.innerHTML && elem8.innerHTML == elem9.innerHTML && elem7.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem1.innerHTML + " wins");
+                console.log(elem1.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-7").style.backgroundColor = "orange";
+                document.getElementById("item-8").style.backgroundColor = "orange";
+                document.getElementById("item-9").style.backgroundColor = "orange";
+                flag = 1;
+            }
+            else if (elem1.innerHTML == elem5.innerHTML && elem5.innerHTML == elem9.innerHTML && elem1.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem1.innerHTML + " wins");
+                console.log(elem1.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-1").style.backgroundColor = "orange";
+                document.getElementById("item-5").style.backgroundColor = "orange";
+                document.getElementById("item-9").style.backgroundColor = "orange";
+                flag = 1;
+            }
+            else if (elem3.innerHTML == elem5.innerHTML && elem5.innerHTML == elem7.innerHTML && elem3.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem3.innerHTML + " wins");
+                console.log(elem3.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-3").style.backgroundColor = "orange";
+                document.getElementById("item-5").style.backgroundColor = "orange";
+                document.getElementById("item-7").style.backgroundColor = "orange";
+                flag = 1;
+            }
+            else if (elem1.innerHTML == elem4.innerHTML && elem4.innerHTML == elem7.innerHTML && elem1.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem1.innerHTML + " wins");
+                console.log(elem1.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-1").style.backgroundColor = "orange";
+                document.getElementById("item-4").style.backgroundColor = "orange";
+                document.getElementById("item-7").style.backgroundColor = "orange";
+                flag = 1;
+            }
+            else if (elem2.innerHTML == elem5.innerHTML && elem5.innerHTML == elem8.innerHTML && elem2.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem2.innerHTML + " wins");
+                console.log(elem2.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-2").style.backgroundColor = "orange";
+                document.getElementById("item-5").style.backgroundColor = "orange";
+                document.getElementById("item-8").style.backgroundColor = "orange";
+                flag = 1;
+            }
+            else if (elem3.innerHTML == elem6.innerHTML && elem6.innerHTML == elem9.innerHTML && elem3.innerHTML != "") {
+                document.getElementById("second_img").style.display = 'block';
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = (elem3.innerHTML + " wins");
+                console.log(elem3.innerHTML + " wins");
+                win_audio.play();
+                document.getElementById("item-3").style.backgroundColor = "orange";
+                document.getElementById("item-6").style.backgroundColor = "orange";
+                document.getElementById("item-9").style.backgroundColor = "orange";
+                flag = 1;
+            }
+        }
+        function lose() {
+            console.log(flag);
+            if (flag == 0) {
+                document.getElementById("third").style.display = 'block';
+                document.getElementById("third").innerHTML = "<h2>Game Over</h2>";
+                gameover_audio.play();
+            }
+        }
+    </script>
+</body>
+
+</html>
